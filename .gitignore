@@ -1,0 +1,6 @@
+*tmp/
+*.sum
+.DS_Store
+.idea
+go.sum
+mysql/mysql_data/*
