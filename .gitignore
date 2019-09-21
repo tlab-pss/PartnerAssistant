@@ -4,3 +4,5 @@
 .idea
 go.sum
 mysql/mysql_data/*
+
+*.env
