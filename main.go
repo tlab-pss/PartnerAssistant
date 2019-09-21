@@ -17,9 +17,6 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	ab := os.Getenv("TEST")
-	log.Println(ab)
-
 	e := echo.New()
 
 	e.GET("/:module", reqManager.Controller)
