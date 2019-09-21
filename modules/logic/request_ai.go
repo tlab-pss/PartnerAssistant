@@ -4,13 +4,16 @@ package logic
 import (
 	"fmt"
 	"os"
+	"encoding/json"
 
 	"github.com/IBM/go-sdk-core/core"
 	assistant "github.com/watson-developer-cloud/go-sdk/assistantv1"
+
+	assistantType "main/models/assistant"
 )
 
-// RequestAI : AIに向けてリクエストを送るところ
-func RequestAI() string {
+// RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
+func RequestAI() interface{} {
 	// Instantiate the Watson Assistant service
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
@@ -42,8 +45,13 @@ func RequestAI() string {
 	if responseErr != nil {
 		panic(responseErr)
 	}
+	
+	jsonBytes := ([]byte)(response.String())
+	data := new(assistantType.ResponseType)
 
-	fmt.Println(response)
-
-	return "aaaa"
+	if err := json.Unmarshal(jsonBytes, data); err != nil {
+		fmt.Println("JSON Unmarshal error:", err)
+	}
+	
+	return data.Result.Output.Generic[0].Text
 }
