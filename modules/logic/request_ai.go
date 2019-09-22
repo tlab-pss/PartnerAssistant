@@ -13,7 +13,7 @@ import (
 )
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
-func RequestAI() interface{} {
+func RequestAI(reqMessage string) interface{} {
 	// Instantiate the Watson Assistant service
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
@@ -33,7 +33,7 @@ func RequestAI() interface{} {
 	workspaceID := os.Getenv("watson_workspace_id")
 
 	input := &assistant.MessageInput{}
-	input.SetText(core.StringPtr("Hello, how are you?"))
+	input.SetText(core.StringPtr(reqMessage))
 
 	messageOptions := service.NewMessageOptions(workspaceID).
 		SetInput(input)

@@ -19,7 +19,7 @@ func main() {
 
 	e := echo.New()
 
-	e.GET("/:module", reqManager.Controller)
+	e.POST("/:module", reqManager.Controller)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

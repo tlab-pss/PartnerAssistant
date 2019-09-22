@@ -15,7 +15,7 @@ func Controller(c echo.Context) error {
 	switch module {
 	// どうにかする（後で考える）
 	case "sample":
-		return c.JSON(http.StatusOK, sample.ParseRequest(c))
+		return sample.ParseRequest(c)
 	default:
 		return c.JSON(http.StatusBadRequest, "Bad Request")
 	}
