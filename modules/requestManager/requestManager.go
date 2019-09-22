@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
+	"main/modules/client/linebot"
 	"main/modules/client/sample"
 )
 
@@ -19,6 +20,8 @@ func Controller(c echo.Context) error {
 
 	switch module {
 	// どうにかする（後で考える）
+	case "linebot":
+		return linebot.ParseRequest(c)
 	case "sample":
 		return sample.ParseRequest(c)
 	default:

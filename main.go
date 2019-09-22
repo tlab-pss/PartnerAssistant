@@ -7,6 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 
 	reqManager "main/modules/requestmanager"
 )
@@ -18,6 +19,7 @@ func main() {
 	}
 
 	e := echo.New()
+	e.Use(middleware.CORS())
 
 	e.POST("/:module", reqManager.Controller)
 
