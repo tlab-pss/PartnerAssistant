@@ -21,8 +21,8 @@ func ParseRequest(c echo.Context) error {
 
 	if err := c.Bind(post); err != nil {
 		fmt.Println("POST data :", err)
-        return err
-    }
+		return err
+	}
 
 	// AIの返答をもらう
 	return c.JSON(http.StatusOK, logic.RequestAI(post.Message))
