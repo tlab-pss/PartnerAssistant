@@ -8,6 +8,8 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/line/line-bot-sdk-go/linebot"
+
+	"main/modules/logic"
 )
 
 // ParseRequest : Logicモジュールに向けて型を整形する
@@ -33,8 +35,9 @@ func ParseRequest(c echo.Context) error {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
 				fmt.Println("Get message:", message.Text)
-				// 送ったメッセージをおうむ返ししているだけ
-				resMessage := linebot.NewTextMessage(message.Text)
+
+				watsonResponse := logic.RequestAI(message.Text)
+				resMessage := linebot.NewTextMessage(watsonResponse)
 				if _, err = bot.ReplyMessage(event.ReplyToken, resMessage).Do(); err != nil {
 					fmt.Println("Reply error:", err)
 				}
