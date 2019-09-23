@@ -1,27 +1,25 @@
 package main
 
 import (
-    "net/http"
-    "github.com/labstack/echo"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+	"github.com/labstack/echo"
+
+	reqManager "main/modules/requestmanager"
 )
 
-type User struct {
-    ID int `json:"id"`
-    Name  string `json:"name"`
-    Email string `json:"email"`
-}
-
 func main() {
-    e := echo.New()
-    e.GET("/", hello)
-    e.Logger.Fatal(e.Start(":8080"))
-}
+	err := godotenv.Load(fmt.Sprintf("envfiles/%s.env", os.Getenv("GO_ENV")))
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-func hello(c echo.Context) error {
-    user := &User{
-        ID: 100,
-        Name: "sample user",
-        Email: "sample@test.com",
-    }
-    return c.JSON(http.StatusOK, user)
+	e := echo.New()
+
+	e.POST("/:module", reqManager.Controller)
+
+	e.Logger.Fatal(e.Start(":8080"))
 }
