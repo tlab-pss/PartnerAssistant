@@ -2,14 +2,14 @@
 package logic
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"encoding/json"
 
 	"github.com/IBM/go-sdk-core/core"
 	assistant "github.com/watson-developer-cloud/go-sdk/assistantv1"
 
-	assistantType "main/models/assistant"
+	watsonResType "main/models/assistant"
 )
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
@@ -45,13 +45,13 @@ func RequestAI(reqMessage string) interface{} {
 	if responseErr != nil {
 		panic(responseErr)
 	}
-	
+
 	jsonBytes := ([]byte)(response.String())
-	data := new(assistantType.ResponseType)
+	data := new(watsonResType.WatsonResponseType)
 
 	if err := json.Unmarshal(jsonBytes, data); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 	}
-	
+
 	return data.Result.Output.Generic[0].Text
 }

@@ -1,8 +1,8 @@
 package assistant
 
-// ResponseType : WatsonAssistantからのレスポンスの型
+// WatsonResponseType : WatsonAssistantからのレスポンスの型
 // 変換はここでやった -> https://mholt.github.io/json-to-go/
-type ResponseType struct {
+type WatsonResponseType struct {
 	StatusCode int `json:"StatusCode"`
 	Headers    struct {
 		AccessControlAllowHeaders    []string `json:"Access-Control-Allow-Headers"`
@@ -38,10 +38,10 @@ type ResponseType struct {
 		Context  struct {
 			ConversationID string `json:"conversation_id"`
 			System         struct {
-				NodeOutputMap interface{} `json:"_node_output_map"`
-				BranchExited         bool   `json:"branch_exited"`
-				BranchExitedReason   string `json:"branch_exited_reason"`
-				DialogRequestCounter int    `json:"dialog_request_counter"`
+				NodeOutputMap        interface{} `json:"_node_output_map"`
+				BranchExited         bool        `json:"branch_exited"`
+				BranchExitedReason   string      `json:"branch_exited_reason"`
+				DialogRequestCounter int         `json:"dialog_request_counter"`
 				DialogStack          []struct {
 					DialogNode string `json:"dialog_node"`
 				} `json:"dialog_stack"`
