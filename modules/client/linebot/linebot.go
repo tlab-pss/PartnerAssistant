@@ -32,11 +32,11 @@ func ParseRequest(c echo.Context) error {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				fmt.Println(message)
+				fmt.Println("Get message:", message.Text)
 				// 送ったメッセージをおうむ返ししているだけ
 				resMessage := linebot.NewTextMessage(message.Text)
 				if _, err = bot.ReplyMessage(event.ReplyToken, resMessage).Do(); err != nil {
-					fmt.Println(err)
+					fmt.Println("Reply error:", err)
 				}
 			}
 		}
