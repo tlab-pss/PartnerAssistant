@@ -21,13 +21,13 @@ func ParseRequest(c echo.Context) error {
 	)
 	if err != nil {
 		fmt.Println("Initialize Error:", err)
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	received, err := bot.ParseRequest(c.Request())
 	if err != nil {
 		fmt.Println("Receive Error:", err)
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	for _, event := range received {
