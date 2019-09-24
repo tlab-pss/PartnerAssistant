@@ -14,8 +14,8 @@ type RequestType struct {
 	Message string `json:"message"`
 }
 
-// ParseRequest : Logicモジュールに向けて型を整形する
-func ParseRequest(c echo.Context) error {
+// ExecuteProcess :  Logicモジュールにリクエストを送り、処理結果をクライアントに返す
+func ExecuteProcess(c echo.Context) error {
 	// Logicモジュールに向けて型を整える
 	post := new(RequestType)
 

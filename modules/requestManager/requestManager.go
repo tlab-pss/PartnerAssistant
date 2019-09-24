@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
+	"main/modules/client/linebot"
 	"main/modules/client/sample"
 )
 
@@ -19,8 +20,10 @@ func Controller(c echo.Context) error {
 
 	switch module {
 	// どうにかする（後で考える）
+	case "linebot":
+		return linebot.ExecuteProcess(c)
 	case "sample":
-		return sample.ParseRequest(c)
+		return sample.ExecuteProcess(c)
 	default:
 		return c.JSON(http.StatusBadRequest, &errorMessage{
 			Message: "The requested client does not exist",
