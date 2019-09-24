@@ -12,8 +12,8 @@ import (
 	"main/modules/logic"
 )
 
-// ParseRequest : Logicモジュールに向けて型を整形する
-func ParseRequest(c echo.Context) error {
+// ExecuteRequest : Logicモジュールにリクエストを送り、処理結果をクライアントに返す
+func ExecuteRequest(c echo.Context) error {
 
 	bot, err := linebot.New(
 		os.Getenv("linebot_channel_secret"),

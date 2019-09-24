@@ -21,9 +21,9 @@ func Controller(c echo.Context) error {
 	switch module {
 	// どうにかする（後で考える）
 	case "linebot":
-		return linebot.ParseRequest(c)
+		return linebot.ExecuteRequest(c)
 	case "sample":
-		return sample.ParseRequest(c)
+		return sample.ExecuteRequest(c)
 	default:
 		return c.JSON(http.StatusBadRequest, &errorMessage{
 			Message: "The requested client does not exist",
