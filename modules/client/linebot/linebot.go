@@ -12,8 +12,8 @@ import (
 	"main/modules/logic"
 )
 
-// ExecuteRequest : Logicモジュールにリクエストを送り、処理結果をクライアントに返す
-func ExecuteRequest(c echo.Context) error {
+// ExecuteProcess : Logicモジュールにリクエストを送り、処理結果をクライアントに返す
+func ExecuteProcess(c echo.Context) error {
 
 	bot, err := linebot.New(
 		os.Getenv("linebot_channel_secret"),
