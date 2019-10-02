@@ -4,6 +4,12 @@ This repository is Partner Assistant Module in PSS.
 
 ## Usage
 
+```bash
+$ cp ./envfiles/develop.env.example ./envfiles/develop.env
+
+$ docker-compose build
+```
+
 ### send request
 
 `<base_url>/:moduls`
