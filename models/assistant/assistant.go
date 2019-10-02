@@ -1,5 +1,9 @@
 package assistant
 
+import (
+	"main/models/servicetype"
+)
+
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
 // 変換はここでやった -> https://mholt.github.io/json-to-go/
 type WatsonResponseType struct {
@@ -48,6 +52,8 @@ type WatsonResponseType struct {
 				DialogTurnCounter int  `json:"dialog_turn_counter"`
 				Initialized       bool `json:"initialized"`
 			} `json:"system"`
+			RequireService bool   `json:"require_service"`
+			ServiceType    string `json:"service_type"`
 		} `json:"context"`
 		Output struct {
 			Generic []struct {
@@ -59,4 +65,40 @@ type WatsonResponseType struct {
 			Text         []string      `json:"text"`
 		} `json:"output"`
 	} `json:"Result"`
+}
+
+// ReplyText : Watson Assistantのテキストを返す
+func (r WatsonResponseType) ReplyText() string {
+	return r.Result.Output.Generic[0].Text
+}
+
+// IsRequireService : サービスリクエストTriggerに引っかかっているかどうか
+func (r WatsonResponseType) isRequireService() bool {
+	return r.Result.Context.RequireService
+}
+
+func (r WatsonResponseType) getServiceType() string {
+	return r.Result.Context.ServiceType
+}
+
+// ServiceType : 要求サービスのカテゴリを返す
+func (r WatsonResponseType) ServiceType() servicetype.ServiceType {
+
+	if r.isRequireService() != true {
+		return servicetype.NoRequest
+	}
+
+	stringType := r.getServiceType()
+	switch stringType {
+	case "COMMERCE":
+		return servicetype.Commerce
+	case "GRORMET":
+		return servicetype.Gourmet
+	case "WEATHER":
+		return servicetype.Weather
+	case "MAP":
+		return servicetype.Map
+	default:
+		return servicetype.NoRequest
+	}
 }

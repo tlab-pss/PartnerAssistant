@@ -12,8 +12,14 @@ import (
 	watsonResType "main/models/assistant"
 )
 
+// ReplyAIType : AIのResqponseの型を定義する
+type ReplyAIType struct {
+	Message     string `json:"message"`
+	ServiceType string `json:"service_type"`
+}
+
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
-func RequestAI(reqMessage string) string {
+func RequestAI(reqMessage string) *ReplyAIType {
 	// Instantiate the Watson Assistant service
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
@@ -47,11 +53,18 @@ func RequestAI(reqMessage string) string {
 	}
 
 	jsonBytes := ([]byte)(response.String())
-	data := new(watsonResType.WatsonResponseType)
+	replyData := new(watsonResType.WatsonResponseType)
 
-	if err := json.Unmarshal(jsonBytes, data); err != nil {
+	if err := json.Unmarshal(jsonBytes, replyData); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 	}
 
-	return data.Result.Output.Generic[0].Text
+	fmt.Println(response)
+
+	result := &ReplyAIType{
+		Message:     replyData.ReplyText(),
+		ServiceType: replyData.ServiceType().String(),
+	}
+
+	return result
 }
