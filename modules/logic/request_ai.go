@@ -61,6 +61,8 @@ func RequestAI(reqMessage string) *ReplyAIType {
 
 	fmt.Println(response)
 
+	fmt.Println(replyData.Result.Context.RequireService)
+
 	result := &ReplyAIType{
 		Message:     replyData.ReplyText(),
 		ServiceType: replyData.ServiceType().String(),

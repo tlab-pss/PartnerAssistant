@@ -116,7 +116,7 @@ func (r WatsonResponseType) ServiceType() servicetype.ServiceType {
 	switch stringType {
 	case "COMMERCE":
 		return servicetype.Commerce
-	case "GRORMET":
+	case "GOURMET":
 		return servicetype.Gourmet
 	case "WEATHER":
 		return servicetype.Weather
