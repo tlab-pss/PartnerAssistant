@@ -38,7 +38,7 @@ type WatsonResponseType struct {
 			Intent     string  `json:"intent"`
 			Confidence float64 `json:"confidence"`
 		} `json:"intents"`
-		Entities []interface{} `json:"entities"`
+		Entities []EntitiesType `json:"entities"`
 		Context  struct {
 			ConversationID string `json:"conversation_id"`
 			System         struct {
@@ -67,9 +67,33 @@ type WatsonResponseType struct {
 	} `json:"Result"`
 }
 
+// EntitiesType : Entityの型
+type EntitiesType struct {
+	Entity     string `json:"entity"`
+	Location   []int  `json:"location"`
+	Value      string `json:"value"`
+	Confidence int    `json:"confidence"`
+}
+
+// InputText : Watsonに送ったテキストを返す
+func (r WatsonResponseType) InputText() string {
+	return r.Result.Input.Text
+}
+
 // ReplyText : Watson Assistantのテキストを返す
 func (r WatsonResponseType) ReplyText() string {
 	return r.Result.Output.Generic[0].Text
+}
+
+// OriginEntityWords : Watson AssistantのEntityに該当したオリジナルワードの配列を返す
+func (r WatsonResponseType) OriginEntityWords() []string {
+	words := []string{}
+	originEntities := r.Result.Entities
+
+	for _, originEntitie := range originEntities {
+		words = append(words, originEntitie.Value)
+	}
+	return words
 }
 
 // IsRequireService : サービスリクエストTriggerに引っかかっているかどうか
