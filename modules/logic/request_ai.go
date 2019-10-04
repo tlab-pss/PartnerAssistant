@@ -14,8 +14,9 @@ import (
 
 // ReplyAIType : AIのResqponseの型を定義する
 type ReplyAIType struct {
-	Message     string `json:"message"`
-	ServiceType string `json:"service_type"`
+	Message        string `json:"message"`
+	TopicCategory  string `json:"topic_category"`
+	RequireService bool   `json:"require_service"`
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
@@ -61,11 +62,10 @@ func RequestAI(reqMessage string) *ReplyAIType {
 
 	fmt.Println(response)
 
-	fmt.Println(replyData.Result.Context.RequireService)
-
 	result := &ReplyAIType{
-		Message:     replyData.ReplyText(),
-		ServiceType: replyData.ServiceType().String(),
+		Message:        replyData.ReplyText(),
+		TopicCategory:  replyData.TopicCategory().String(),
+		RequireService: replyData.IsRequireService(),
 	}
 
 	return result

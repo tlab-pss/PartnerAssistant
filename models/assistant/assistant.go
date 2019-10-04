@@ -53,7 +53,7 @@ type WatsonResponseType struct {
 				Initialized       bool `json:"initialized"`
 			} `json:"system"`
 			RequireService bool   `json:"require_service"`
-			ServiceType    string `json:"service_type"`
+			TopicCategory  string `json:"topic_category"`
 		} `json:"context"`
 		Output struct {
 			Generic []struct {
@@ -97,22 +97,18 @@ func (r WatsonResponseType) OriginEntityWords() []string {
 }
 
 // IsRequireService : サービスリクエストTriggerに引っかかっているかどうか
-func (r WatsonResponseType) isRequireService() bool {
+func (r WatsonResponseType) IsRequireService() bool {
 	return r.Result.Context.RequireService
 }
 
-func (r WatsonResponseType) getServiceType() string {
-	return r.Result.Context.ServiceType
+func (r WatsonResponseType) getTopicCategory() string {
+	return r.Result.Context.TopicCategory
 }
 
-// ServiceType : 要求サービスのカテゴリを返す
-func (r WatsonResponseType) ServiceType() servicetype.ServiceType {
+// TopicCategory : 会話内容のカテゴリを返す
+func (r WatsonResponseType) TopicCategory() servicetype.ServiceType {
 
-	if r.isRequireService() != true {
-		return servicetype.NoRequest
-	}
-
-	stringType := r.getServiceType()
+	stringType := r.getTopicCategory()
 	switch stringType {
 	case "COMMERCE":
 		return servicetype.Commerce
