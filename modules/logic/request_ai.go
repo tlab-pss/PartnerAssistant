@@ -60,8 +60,6 @@ func RequestAI(reqMessage string) *ReplyAIType {
 		fmt.Println("JSON Unmarshal error:", err)
 	}
 
-	fmt.Println(response)
-
 	result := &ReplyAIType{
 		Message:        replyData.ReplyText(),
 		TopicCategory:  replyData.TopicCategory().String(),
