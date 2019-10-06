@@ -77,5 +77,9 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 		Message: replyData.ReplyText(),
 	}
 
+	if replyData.IsRequireService() {
+		result = result.RequestService()
+	}
+
 	return result, nil
 }
