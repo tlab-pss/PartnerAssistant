@@ -26,6 +26,8 @@ const (
 	Translation
 	// News : ニュース
 	News
+	// PersonalData : 個人情報
+	PersonalData
 )
 
 func (s CategoryType) String() string {
@@ -48,6 +50,8 @@ func (s CategoryType) String() string {
 		return "Translation"
 	case News:
 		return "News"
+	case PersonalData:
+		return "PersonalData"
 	case Uncategorized:
 		return "Uncategorized"
 	default:

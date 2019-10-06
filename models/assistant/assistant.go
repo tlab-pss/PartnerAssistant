@@ -118,6 +118,8 @@ func (r WatsonResponseType) TopicCategory() categorytype.CategoryType {
 		return categorytype.Weather
 	case "MAP":
 		return categorytype.Map
+	case "PersonalData":
+		return categorytype.PersonalData
 	default:
 		return categorytype.Uncategorized
 	}
