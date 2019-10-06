@@ -1,7 +1,7 @@
 package assistant
 
 import (
-	servicetype "main/models/service_type"
+	categorytype "main/models/category_type"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
@@ -106,19 +106,19 @@ func (r WatsonResponseType) getTopicCategory() string {
 }
 
 // TopicCategory : 会話内容のカテゴリを返す
-func (r WatsonResponseType) TopicCategory() servicetype.ServiceType {
+func (r WatsonResponseType) TopicCategory() categorytype.CategoryType {
 
 	stringType := r.getTopicCategory()
 	switch stringType {
 	case "COMMERCE":
-		return servicetype.Commerce
+		return categorytype.Commerce
 	case "GOURMET":
-		return servicetype.Gourmet
+		return categorytype.Gourmet
 	case "WEATHER":
-		return servicetype.Weather
+		return categorytype.Weather
 	case "MAP":
-		return servicetype.Map
+		return categorytype.Map
 	default:
-		return servicetype.NoRequest
+		return categorytype.Uncategorized
 	}
 }
