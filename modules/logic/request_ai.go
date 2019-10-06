@@ -66,5 +66,9 @@ func RequestAI(reqMessage string) *ReplyAIType {
 		RequireService: replyData.IsRequireService(),
 	}
 
+	if replyData.IsRequireService() {
+		result = result.RequestService()
+	}
+
 	return result
 }
