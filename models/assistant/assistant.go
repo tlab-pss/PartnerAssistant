@@ -1,7 +1,7 @@
 package assistant
 
 import (
-	"main/models/servicetype"
+	servicetype "main/models/service_type"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
