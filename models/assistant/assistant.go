@@ -90,8 +90,8 @@ func (r WatsonResponseType) OriginEntityWords() []string {
 	words := []string{}
 	originEntities := r.Result.Entities
 
-	for _, originEntitie := range originEntities {
-		words = append(words, originEntitie.Value)
+	for _, originEntity := range originEntities {
+		words = append(words, originEntity.Value)
 	}
 	return words
 }
