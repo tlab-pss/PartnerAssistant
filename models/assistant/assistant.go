@@ -1,7 +1,8 @@
 package assistant
 
 import (
-	categorytype "main/models/category_type"
+	topiccategory "main/models/topic_category"
+	pdcategory "main/modules/pd_category"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
@@ -54,6 +55,7 @@ type WatsonResponseType struct {
 			} `json:"system"`
 			RequireService bool   `json:"require_service"`
 			TopicCategory  string `json:"topic_category"`
+			PdCategory     string `json:"pd_category"`
 		} `json:"context"`
 		Output struct {
 			Generic []struct {
@@ -105,22 +107,39 @@ func (r WatsonResponseType) getTopicCategory() string {
 	return r.Result.Context.TopicCategory
 }
 
+func (r WatsonResponseType) getPersonalDataCategory() string {
+	return r.Result.Context.PdCategory
+}
+
 // TopicCategory : 会話内容のカテゴリを返す
-func (r WatsonResponseType) TopicCategory() categorytype.CategoryType {
+func (r WatsonResponseType) TopicCategory() topiccategory.TopicCategory {
 
 	stringType := r.getTopicCategory()
 	switch stringType {
 	case "COMMERCE":
-		return categorytype.Commerce
+		return topiccategory.Commerce
 	case "GOURMET":
-		return categorytype.Gourmet
+		return topiccategory.Gourmet
 	case "WEATHER":
-		return categorytype.Weather
+		return topiccategory.Weather
 	case "MAP":
-		return categorytype.Map
-	case "PersonalData":
-		return categorytype.PersonalData
+		return topiccategory.Map
+	case "PERSONALDATA":
+		return topiccategory.PersonalData
 	default:
-		return categorytype.Uncategorized
+		return topiccategory.Uncategorized
 	}
+}
+
+// PersonalDataCategory : 含まれているパーソナルデータのカテゴリを返す
+func (r WatsonResponseType) PersonalDataCategory() pdcategory.PersonalDataCategory {
+
+	stringType := r.getPersonalDataCategory()
+	switch stringType {
+	case "Name":
+		return pdcategory.Name
+	default:
+		return pdcategory.Uncategorized
+	}
+
 }

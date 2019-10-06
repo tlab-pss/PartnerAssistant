@@ -1,11 +1,11 @@
-package categorytype
+package topiccategory
 
-// CategoryType : サービスのカテゴリを定義
-type CategoryType int
+// TopicCategory : サービスのカテゴリを定義
+type TopicCategory int
 
 const (
 	// Uncategorized : 未分類
-	Uncategorized CategoryType = iota
+	Uncategorized TopicCategory = iota
 	// Commerce : コマース
 	Commerce
 	// Gourmet : グルメ
@@ -30,7 +30,7 @@ const (
 	PersonalData
 )
 
-func (s CategoryType) String() string {
+func (s TopicCategory) String() string {
 	switch s {
 	case Gourmet:
 		return "Gourmet"
