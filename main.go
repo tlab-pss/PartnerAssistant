@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	reqManager "main/modules/requestmanager"
+	reqManager "main/modules/request_manager"
 )
 
 func main() {

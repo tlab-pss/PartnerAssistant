@@ -37,7 +37,7 @@ func ExecuteProcess(c echo.Context) error {
 				fmt.Println("Get message:", message.Text)
 
 				watsonResponse := logic.RequestAI(message.Text)
-				resMessage := linebot.NewTextMessage(watsonResponse)
+				resMessage := linebot.NewTextMessage(watsonResponse.Message)
 				if _, err = bot.ReplyMessage(event.ReplyToken, resMessage).Do(); err != nil {
 					fmt.Println("Reply error:", err)
 				}

@@ -1,5 +1,9 @@
 package assistant
 
+import (
+	categorytype "main/models/category_type"
+)
+
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
 // 変換はここでやった -> https://mholt.github.io/json-to-go/
 type WatsonResponseType struct {
@@ -34,7 +38,7 @@ type WatsonResponseType struct {
 			Intent     string  `json:"intent"`
 			Confidence float64 `json:"confidence"`
 		} `json:"intents"`
-		Entities []interface{} `json:"entities"`
+		Entities []EntitiesType `json:"entities"`
 		Context  struct {
 			ConversationID string `json:"conversation_id"`
 			System         struct {
@@ -48,6 +52,8 @@ type WatsonResponseType struct {
 				DialogTurnCounter int  `json:"dialog_turn_counter"`
 				Initialized       bool `json:"initialized"`
 			} `json:"system"`
+			RequireService bool   `json:"require_service"`
+			TopicCategory  string `json:"topic_category"`
 		} `json:"context"`
 		Output struct {
 			Generic []struct {
@@ -59,4 +65,60 @@ type WatsonResponseType struct {
 			Text         []string      `json:"text"`
 		} `json:"output"`
 	} `json:"Result"`
+}
+
+// EntitiesType : Entityの型
+type EntitiesType struct {
+	Entity     string `json:"entity"`
+	Location   []int  `json:"location"`
+	Value      string `json:"value"`
+	Confidence int    `json:"confidence"`
+}
+
+// InputText : Watsonに送ったテキストを返す
+func (r WatsonResponseType) InputText() string {
+	return r.Result.Input.Text
+}
+
+// ReplyText : Watson Assistantのテキストを返す
+func (r WatsonResponseType) ReplyText() string {
+	return r.Result.Output.Generic[0].Text
+}
+
+// OriginEntityWords : Watson AssistantのEntityに該当したオリジナルワードの配列を返す
+func (r WatsonResponseType) OriginEntityWords() []string {
+	words := []string{}
+	originEntities := r.Result.Entities
+
+	for _, originEntity := range originEntities {
+		words = append(words, originEntity.Value)
+	}
+	return words
+}
+
+// IsRequireService : サービスリクエストTriggerに引っかかっているかどうか
+func (r WatsonResponseType) IsRequireService() bool {
+	return r.Result.Context.RequireService
+}
+
+func (r WatsonResponseType) getTopicCategory() string {
+	return r.Result.Context.TopicCategory
+}
+
+// TopicCategory : 会話内容のカテゴリを返す
+func (r WatsonResponseType) TopicCategory() categorytype.CategoryType {
+
+	stringType := r.getTopicCategory()
+	switch stringType {
+	case "COMMERCE":
+		return categorytype.Commerce
+	case "GOURMET":
+		return categorytype.Gourmet
+	case "WEATHER":
+		return categorytype.Weather
+	case "MAP":
+		return categorytype.Map
+	default:
+		return categorytype.Uncategorized
+	}
 }

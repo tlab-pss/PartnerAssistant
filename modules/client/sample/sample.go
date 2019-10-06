@@ -24,6 +24,8 @@ func ExecuteProcess(c echo.Context) error {
 		return err
 	}
 
+	response := logic.RequestAI(post.Message)
+
 	// AIの返答をもらう
-	return c.JSON(http.StatusOK, logic.RequestAI(post.Message))
+	return c.JSON(http.StatusOK, response)
 }
