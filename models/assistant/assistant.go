@@ -1,8 +1,8 @@
 package assistant
 
 import (
+	pdcategory "main/models/pd_category"
 	topiccategory "main/models/topic_category"
-	pdcategory "main/modules/pd_category"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
