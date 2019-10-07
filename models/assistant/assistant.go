@@ -1,8 +1,8 @@
 package assistant
 
 import (
-	personaldatacategory "main/models/personal_data_category"
-	topiccategory "main/models/topic_category"
+	personaldatacategory "main/models/category/personal_data_category"
+	topiccategory "main/models/category/topic_category"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
