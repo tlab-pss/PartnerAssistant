@@ -1,7 +1,7 @@
 package assistant
 
 import (
-	pdcategory "main/models/pd_category"
+	personaldatacategory "main/models/personal_data_category"
 	topiccategory "main/models/topic_category"
 )
 
@@ -132,14 +132,14 @@ func (r WatsonResponseType) TopicCategory() topiccategory.TopicCategory {
 }
 
 // PersonalDataCategory : 含まれているパーソナルデータのカテゴリを返す
-func (r WatsonResponseType) PersonalDataCategory() pdcategory.PersonalDataCategory {
+func (r WatsonResponseType) PersonalDataCategory() personaldatacategory.PersonalDataCategory {
 
 	stringType := r.getPersonalDataCategory()
 	switch stringType {
-	case "Name":
-		return pdcategory.Name
+	case "NAME":
+		return personaldatacategory.Name
 	default:
-		return pdcategory.Uncategorized
+		return personaldatacategory.Uncategorized
 	}
 
 }

@@ -1,4 +1,4 @@
-package pdcategory
+package personaldatacategory
 
 // PersonalDataCategory : サービスのカテゴリを定義
 type PersonalDataCategory int
