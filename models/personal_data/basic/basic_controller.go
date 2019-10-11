@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
 // Fetch : PDからデータを取得する
 func (b *BasicPersonalData) Fetch() (*BasicPersonalData, error) {
 
-	req, err := http.NewRequest("GET", "http://localhost:8080/api/basics", nil)
+	req, err := http.NewRequest("GET", "http://pd:8080/api/basics", nil)
 	if err != nil {
 		fmt.Printf("pd error, cannot create http request")
 		return b, err
@@ -26,21 +26,16 @@ func (b *BasicPersonalData) Fetch() (*BasicPersonalData, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("pd error! cannot read response body")
-		return b, err
-	}
+	var r io.Reader = resp.Body
+	// r = io.TeeReader(r, os.Stderr)
 
-	fmt.Println(body)
-
-	jsonBytes := ([]byte)(body)
 	replyData := new(BasicPersonalData)
 
-	if err := json.Unmarshal(jsonBytes, replyData); err != nil {
+	if err := json.NewDecoder(r).Decode(replyData); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 	}
 
+	// fmt.Println(replyData)
 	return replyData, nil
 }
 
@@ -64,7 +59,7 @@ func (b *BasicPersonalData) Update(value *UpdateBasicPersonalData) error {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", "http://localhost:8080/api/basics", bytes.NewBuffer(jsonBytes))
+	req, err := http.NewRequest("POST", "http://pd:8080/api/basics", bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		fmt.Printf("pd error, cannot create http request")
 		return err
@@ -79,14 +74,6 @@ func (b *BasicPersonalData) Update(value *UpdateBasicPersonalData) error {
 		return err
 	}
 	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("pd error! cannot read response body")
-		return err
-	}
-
-	fmt.Println(body)
 
 	return nil
 }

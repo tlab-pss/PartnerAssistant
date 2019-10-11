@@ -56,15 +56,13 @@ func (p *PersonalDataValue) InvokePDUpdate() (*PersonalDataValue, error) {
 		pd, err := pd.Fetch()
 		if err != nil {
 			fmt.Println("cannot fetch personal data")
-			return nil, errors.New("Cannot fetch personal data")
+			return nil, err
 		}
 
 		updateValue, err := p.getBasicValues()
 		if err != nil {
 			return nil, err
 		}
-
-		fmt.Println(pd)
 
 		// BasicPersonalDataの更新
 		err = pd.Update(updateValue)

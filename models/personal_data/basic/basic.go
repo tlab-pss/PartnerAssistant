@@ -2,11 +2,12 @@ package basicpersonaldata
 
 // BasicPersonalData : ユーザの基本情報
 type BasicPersonalData struct {
-	ID       string `json:"Id"`
+	ID       string `json:"ID"`
 	Name     string `json:"Name"`
 	Birthday string `json:"Birthday"`
 	Gender   Gender `json:"Gender"`
 	Mail     string `json:"Mail"`
+	CreateAt string `json:"CreateAt"`
 }
 
 // Gender : 性別
