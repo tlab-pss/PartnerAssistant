@@ -35,8 +35,11 @@ type PersonalDataValue struct {
 	BasicValues basicpd.UpdateBasicPersonalData `json:"basic_values"`
 }
 
-func (p *PersonalDataValue) hasBasicValues() bool {
-	return p.BasicValues.Column != basicpd.Uncategorized
+func (p *PersonalDataValue) getBasicValues() (*basicpd.UpdateBasicPersonalData, error) {
+	if p.BasicValues.Column != basicpd.Uncategorized {
+		return nil, errors.New("not have to update basic values")
+	}
+	return &p.BasicValues, nil
 }
 
 // InvokePDUpdate : パーソナルデータのアップデーターを呼び出す
@@ -52,14 +55,24 @@ func (p *PersonalDataValue) InvokePDUpdate() (*PersonalDataValue, error) {
 		pd := new(basicpd.BasicPersonalData)
 		pd, err := pd.Fetch()
 		if err != nil {
-			fmt.Println("cannot fetch personal data.")
+			fmt.Println("cannot fetch personal data")
 			return nil, errors.New("Cannot fetch personal data")
 		}
 
-		if p.hasBasicValues() {
-			// BasicPersonalDataの更新
+		updateValue, err := p.getBasicValues()
+		if err != nil {
+			return nil, err
 		}
 
+		fmt.Println(pd)
+
+		// BasicPersonalDataの更新
+		err = pd.Update(updateValue)
+		if err != nil {
+			return nil, err
+		}
+
+		return p, nil
 	}
 	return nil, errors.New("Unknown category")
 }
