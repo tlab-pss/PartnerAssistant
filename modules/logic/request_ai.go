@@ -10,14 +10,12 @@ import (
 	assistant "github.com/watson-developer-cloud/go-sdk/assistantv1"
 
 	watsonResType "main/models/assistant"
+	personaldata "main/models/personal_data"
 )
 
 // ReplyAIType : AIのResqponseの型を定義する
 type ReplyAIType struct {
-	Message              string `json:"message"`
-	TopicCategory        string `json:"topic_category"`
-	RequireService       bool   `json:"require_service"`
-	PersonalDataCategory string `json:"personal_data_category"`
+	Message string `json:"message"`
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
@@ -61,13 +59,22 @@ func RequestAI(reqMessage string) *ReplyAIType {
 		fmt.Println("JSON Unmarshal error:", err)
 	}
 
-	fmt.Println(response)
+	// fmt.Println(response)
+
+	requestArgs := &RequireServiceType{
+		TopicCategory:  replyData.TopicCategory(),
+		RequireService: replyData.IsRequireService(),
+		PersonalDataValue: personaldata.PersonalDataValue{
+			Category:    replyData.PersonalDataCategory(),
+			BasicValues: replyData.UpdateBasicPersonalData(),
+		},
+	}
+
+	// レスポンスのパラメタによって動作を分岐させる
+	requestArgs.BranchLogic()
 
 	result := &ReplyAIType{
-		Message:              replyData.ReplyText(),
-		TopicCategory:        replyData.TopicCategory().String(),
-		RequireService:       replyData.IsRequireService(),
-		PersonalDataCategory: replyData.PersonalDataCategory().String(),
+		Message: replyData.ReplyText(),
 	}
 
 	return result
