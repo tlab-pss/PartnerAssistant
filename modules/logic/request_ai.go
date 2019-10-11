@@ -19,7 +19,7 @@ type ReplyAIType struct {
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
-func RequestAI(reqMessage string) *ReplyAIType {
+func RequestAI(reqMessage string) (*ReplyAIType, error) {
 	// Instantiate the Watson Assistant service
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
@@ -49,7 +49,7 @@ func RequestAI(reqMessage string) *ReplyAIType {
 
 	// Check successful call
 	if responseErr != nil {
-		panic(responseErr)
+		return &ReplyAIType{}, responseErr
 	}
 
 	jsonBytes := ([]byte)(response.String())
@@ -77,5 +77,5 @@ func RequestAI(reqMessage string) *ReplyAIType {
 		Message: replyData.ReplyText(),
 	}
 
-	return result
+	return result, nil
 }
