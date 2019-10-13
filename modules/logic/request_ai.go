@@ -10,17 +10,16 @@ import (
 	assistant "github.com/watson-developer-cloud/go-sdk/assistantv1"
 
 	watsonResType "main/models/assistant"
+	personaldata "main/models/personal_data"
 )
 
 // ReplyAIType : AIのResqponseの型を定義する
 type ReplyAIType struct {
-	Message        string `json:"message"`
-	TopicCategory  string `json:"topic_category"`
-	RequireService bool   `json:"require_service"`
+	Message string `json:"message"`
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
-func RequestAI(reqMessage string) *ReplyAIType {
+func RequestAI(reqMessage string) (*ReplyAIType, error) {
 	// Instantiate the Watson Assistant service
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
@@ -50,7 +49,7 @@ func RequestAI(reqMessage string) *ReplyAIType {
 
 	// Check successful call
 	if responseErr != nil {
-		panic(responseErr)
+		return &ReplyAIType{}, responseErr
 	}
 
 	jsonBytes := ([]byte)(response.String())
@@ -60,11 +59,23 @@ func RequestAI(reqMessage string) *ReplyAIType {
 		fmt.Println("JSON Unmarshal error:", err)
 	}
 
-	result := &ReplyAIType{
-		Message:        replyData.ReplyText(),
-		TopicCategory:  replyData.TopicCategory().String(),
+	// fmt.Println(response)
+
+	requestArgs := &RequireServiceType{
+		TopicCategory:  replyData.TopicCategory(),
 		RequireService: replyData.IsRequireService(),
+		PersonalDataValue: personaldata.PersonalDataValue{
+			Category:    replyData.PersonalDataCategory(),
+			BasicValues: replyData.UpdateBasicPersonalData(),
+		},
 	}
 
-	return result
+	// レスポンスのパラメタによって動作を分岐させる
+	requestArgs.BranchLogic()
+
+	result := &ReplyAIType{
+		Message: replyData.ReplyText(),
+	}
+
+	return result, nil
 }

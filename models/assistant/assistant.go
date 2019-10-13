@@ -1,7 +1,9 @@
 package assistant
 
 import (
-	categorytype "main/models/category_type"
+	topiccategory "main/models/category/topic_category"
+	personaldata "main/models/personal_data"
+	basicpd "main/models/personal_data/basic"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型
@@ -54,6 +56,9 @@ type WatsonResponseType struct {
 			} `json:"system"`
 			RequireService bool   `json:"require_service"`
 			TopicCategory  string `json:"topic_category"`
+			PdCategory     string `json:"pd_category"`
+			PdBasicColumn  string `json:"pd_basic_column"`
+			Value          string `json:"value"`
 		} `json:"context"`
 		Output struct {
 			Generic []struct {
@@ -105,20 +110,73 @@ func (r WatsonResponseType) getTopicCategory() string {
 	return r.Result.Context.TopicCategory
 }
 
+func (r WatsonResponseType) getPersonalDataCategory() string {
+	return r.Result.Context.PdCategory
+}
+
+func (r WatsonResponseType) getBasicPersonalDataColumn() string {
+	return r.Result.Context.PdBasicColumn
+}
+
+func (r WatsonResponseType) getValue() string {
+	return r.Result.Context.Value
+}
+
 // TopicCategory : 会話内容のカテゴリを返す
-func (r WatsonResponseType) TopicCategory() categorytype.CategoryType {
+func (r *WatsonResponseType) TopicCategory() topiccategory.TopicCategory {
 
 	stringType := r.getTopicCategory()
 	switch stringType {
 	case "COMMERCE":
-		return categorytype.Commerce
+		return topiccategory.Commerce
 	case "GOURMET":
-		return categorytype.Gourmet
+		return topiccategory.Gourmet
 	case "WEATHER":
-		return categorytype.Weather
+		return topiccategory.Weather
 	case "MAP":
-		return categorytype.Map
+		return topiccategory.Map
+	case "PERSONALDATA":
+		return topiccategory.PersonalData
 	default:
-		return categorytype.Uncategorized
+		return topiccategory.Uncategorized
+	}
+}
+
+// PersonalDataCategory : 含まれているパーソナルデータのカテゴリを返す
+func (r *WatsonResponseType) PersonalDataCategory() personaldata.PersonalDataCategory {
+
+	stringType := r.getPersonalDataCategory()
+	switch stringType {
+	case "Basic":
+		return personaldata.Basic
+	default:
+		return personaldata.Uncategorized
+	}
+}
+
+// PDBasicColumn : Basicに関するカラム名を返す
+func (r *WatsonResponseType) PDBasicColumn() basicpd.BasicPDColumn {
+	stringType := r.getBasicPersonalDataColumn()
+	switch stringType {
+	case "ID":
+		return basicpd.ID
+	case "Name":
+		return basicpd.Name
+	default:
+		return basicpd.Uncategorized
+	}
+}
+
+// UpdateBasicPersonalData : Watsonから返された値をもとに、アップデートに必要なUpdateBasicPersonalDataを返す
+func (r *WatsonResponseType) UpdateBasicPersonalData() basicpd.UpdateBasicPersonalData {
+	value := r.getValue()
+
+	if value == "" {
+		return basicpd.UpdateBasicPersonalData{}
+	}
+
+	return basicpd.UpdateBasicPersonalData{
+		Column: r.PDBasicColumn(),
+		Value:  value,
 	}
 }

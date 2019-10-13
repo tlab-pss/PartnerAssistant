@@ -13,6 +13,8 @@ require (
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/line/line-bot-sdk-go v6.3.0+incompatible
+	github.com/onsi/ginkgo v1.10.2 // indirect
+	github.com/onsi/gomega v1.7.0 // indirect
 	github.com/watson-developer-cloud/go-sdk v0.12.0
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect
 	gopkg.in/go-playground/validator.v9 v9.29.1 // indirect
