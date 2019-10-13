@@ -1,6 +1,6 @@
 package topiccategory
 
-// TopicCategory : サービスのカテゴリを定義
+// TopicCategory : 話題のカテゴリを定義
 type TopicCategory int
 
 const (
