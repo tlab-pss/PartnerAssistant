@@ -26,6 +26,11 @@ func (r *RequireServiceType) BranchLogic() (*RequireServiceType, error) {
 		}
 		r.PersonalDataValue = *personalData
 		return r, nil
+	case topiccategory.Uncategorized:
+		return r, nil
+	default:
+		// todo : Recommend Serviceにリクエストを投げる
 	}
+
 	return nil, errors.New("Unknown topic category")
 }
