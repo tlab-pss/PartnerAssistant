@@ -3,7 +3,6 @@ package logic
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -33,13 +32,11 @@ func (r *RequireServiceType) BranchLogic() (*RequireServiceType, error) {
 		r.ServiceDataValue = res
 		return r, nil
 	}
-
-	return nil, errors.New("Unknown topic category")
 }
 
 // RequestService : レコメンドシステムにリクエストを投げる
-func (r *RequireServiceType) RequestService() (RecommendServiceResType, error) {
-	var rsRes RecommendServiceResType
+func (r *RequireServiceType) RequestService() (*RecommendServiceResType, error) {
+	rsRes := new(RecommendServiceResType)
 
 	// todo: レコメンドサービスに接続するためのいろいろなコードを書く予定
 	jsonBytes, err := json.Marshal(r)
