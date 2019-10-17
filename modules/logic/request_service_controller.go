@@ -38,7 +38,6 @@ func (r *RequireServiceType) BranchLogic() (*RequireServiceType, error) {
 func (r *RequireServiceType) RequestService() (*RecommendServiceResType, error) {
 	rsRes := new(RecommendServiceResType)
 
-	// todo: レコメンドサービスに接続するためのいろいろなコードを書く予定
 	jsonBytes, err := json.Marshal(r)
 	if err != nil {
 		fmt.Println("JSON Marshal error:", err)

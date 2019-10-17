@@ -15,7 +15,8 @@ type RequireServiceType struct {
 
 // RecommendServiceResType : レコメンドシステムを介したサービスの返答を格納する型
 type RecommendServiceResType struct {
-	UUID         string      `json:"uuid"`
-	ServiceName  string      `json:"service_name"`
+	UUID        string `json:"uuid"`
+	ServiceName string `json:"service_name"`
+	// todo : プラグインの結果を格納する型を作って、合わせる
 	ResponseData interface{} `json:"response_data"`
 }
