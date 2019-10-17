@@ -1,10 +1,21 @@
-// Package logic : パーソナルアシスタントの
 package logic
 
-// RequestService : 必要に応じてサービスにリクエストを投げる
-func (r *ReplyAIType) RequestService() *ReplyAIType {
+import (
+	topiccategory "main/models/category/topic_category"
+	personaldata "main/models/personal_data"
+)
 
-	// レコメンドサービスに接続するためのいろいろなコードを書く予定
+// RequireServiceType : サービスリクエストを行うにあたって必要な情報をいれる型
+type RequireServiceType struct {
+	TopicCategory     topiccategory.TopicCategory    `json:"topic_category"`
+	RequireService    bool                           `json:"require_service"`
+	PersonalDataValue personaldata.PersonalDataValue `json:"personal_data_value"`
+	ServiceDataValue  interface{}                    `json:"service_data_value"`
+}
 
-	return r
+// RecommendServiceResType : レコメンドシステムを介したサービスの返答を格納する型
+type RecommendServiceResType struct {
+	UUID         string `json:"uuid"`
+	ServiceName  string `json:"service_name"`
+	ResponseData string `json:"response_data"`
 }
