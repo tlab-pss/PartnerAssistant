@@ -45,7 +45,7 @@ func (r *RequireServiceType) RequestService() (*RecommendServiceResType, error) 
 		return rsRes, err
 	}
 
-	req, err := http.NewRequest("POST", "http://rs:8080/api/basics", bytes.NewBuffer(jsonBytes))
+	req, err := http.NewRequest("POST", "http://rs:8080/api/request", bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		fmt.Printf("pd error, cannot create http request")
 		return rsRes, err
