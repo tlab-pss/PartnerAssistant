@@ -19,7 +19,7 @@ type ReplyAIType struct {
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
-func RequestAI(reqMessage string) (*ReplyAIType, error) {
+func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
 	}
@@ -43,7 +43,7 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 	response, responseErr := service.Message(messageOptions)
 
 	if responseErr != nil {
-		return &ReplyAIType{}, responseErr
+		return nil, responseErr
 	}
 
 	jsonBytes := ([]byte)(response.String())
@@ -53,9 +53,12 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 		fmt.Printf("JSON Unmarshal error: %+v \n %+v", err, jsonBytes)
 	}
 
-	// fmt.Println(response)
+	return replyData, nil
+}
 
-	requestArgs := &RequireServiceType{
+// ConvertRequireServiceType : サービス接続用の型に変換する
+func ConvertRequireServiceType(replyData *watsonResType.WatsonResponseType) *RequireServiceType {
+	return &RequireServiceType{
 		TopicCategory:  replyData.TopicCategory(),
 		RequireService: replyData.IsRequireService(),
 		PersonalDataValue: personaldata.PersonalDataValue{
@@ -64,13 +67,4 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 		},
 		ServiceDataValue: nil,
 	}
-
-	// レスポンスのパラメタによって動作を分岐させる
-	requestArgs.BranchLogic()
-
-	result := &ReplyAIType{
-		Message: replyData.ReplyText(),
-	}
-
-	return result, nil
 }

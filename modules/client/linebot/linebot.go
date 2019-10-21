@@ -36,7 +36,7 @@ func ExecuteProcess(c echo.Context) error {
 			case *linebot.TextMessage:
 				fmt.Println("Get message:", message.Text)
 
-				watsonResponse, err := logic.RequestAI(message.Text)
+				watsonResponse, err := logic.ExecuteLogic(message.Text)
 				if err != nil {
 					fmt.Println("Watson error:", err)
 				}

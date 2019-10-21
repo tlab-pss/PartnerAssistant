@@ -24,7 +24,7 @@ func ExecuteProcess(c echo.Context) error {
 		return err
 	}
 
-	response, err := logic.RequestAI(post.Message)
+	response, err := logic.ExecuteLogic(post.Message)
 	if err != nil {
 		return err
 	}
