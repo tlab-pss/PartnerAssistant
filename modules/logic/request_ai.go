@@ -20,7 +20,6 @@ type ReplyAIType struct {
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
 func RequestAI(reqMessage string) (*ReplyAIType, error) {
-	// Instantiate the Watson Assistant service
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
 	}
@@ -31,23 +30,18 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 		Authenticator: authenticator,
 	})
 
-	// Check successful instantiation
 	if serviceErr != nil {
 		panic(serviceErr)
 	}
 
 	workspaceID := os.Getenv("watson_workspace_id")
-
 	input := &assistant.MessageInput{}
 	input.SetText(core.StringPtr(reqMessage))
-
 	messageOptions := service.NewMessageOptions(workspaceID).
 		SetInput(input)
 
-	// Call the Message method with no specified context
 	response, responseErr := service.Message(messageOptions)
 
-	// Check successful call
 	if responseErr != nil {
 		return &ReplyAIType{}, responseErr
 	}
@@ -68,6 +62,7 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 			Category:    replyData.PersonalDataCategory(),
 			BasicValues: replyData.UpdateBasicPersonalData(),
 		},
+		ServiceDataValue: nil,
 	}
 
 	// レスポンスのパラメタによって動作を分岐させる
