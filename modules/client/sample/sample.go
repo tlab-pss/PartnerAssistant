@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	"main/modules/logic"
+	"github.com/sskmy1024/PartnerAssistant/modules/logic"
 )
 
 // RequestType : 送られてくるリクエストの型

@@ -1,27 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-
-	"github.com/joho/godotenv"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
-
-	reqManager "main/modules/request_manager"
+	"github.com/sskmy1024/PartnerAssistant/api"
+	"github.com/sskmy1024/PartnerAssistant/infrastructures"
 )
 
 func main() {
-	err := godotenv.Load(fmt.Sprintf("envfiles/%s.env", os.Getenv("GO_ENV")))
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	infrastructures.InitEnvironment()
 
-	e := echo.New()
-	e.Use(middleware.CORS())
+	s := infrastructures.NewServer()
+	api.Router(s)
 
-	e.POST("/:module", reqManager.Controller)
-
-	e.Logger.Fatal(e.Start(":8080"))
+	s.Logger.Fatal(s.Start(":8080"))
 }

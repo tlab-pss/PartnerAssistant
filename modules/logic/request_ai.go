@@ -9,8 +9,8 @@ import (
 	"github.com/IBM/go-sdk-core/core"
 	assistant "github.com/watson-developer-cloud/go-sdk/assistantv1"
 
-	watsonResType "main/models/assistant"
-	personaldata "main/models/personal_data"
+	watsonResType "github.com/sskmy1024/PartnerAssistant/models/assistant"
+	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
 )
 
 // ReplyAIType : AIのResqponseの型を定義する
@@ -50,7 +50,7 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 	replyData := new(watsonResType.WatsonResponseType)
 
 	if err := json.Unmarshal(jsonBytes, replyData); err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+		fmt.Printf("JSON Unmarshal error: %+v \n %+v", err, jsonBytes)
 	}
 
 	// fmt.Println(response)

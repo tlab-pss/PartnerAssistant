@@ -1,9 +1,9 @@
 package assistant
 
 import (
-	topiccategory "main/models/category/topic_category"
-	personaldata "main/models/personal_data"
-	basicpd "main/models/personal_data/basic"
+	topiccategory "github.com/sskmy1024/PartnerAssistant/models/category/topic_category"
+	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
+	basicpd "github.com/sskmy1024/PartnerAssistant/models/personal_data/basic"
 )
 
 // WatsonResponseType : WatsonAssistantからのレスポンスの型

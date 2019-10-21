@@ -1,8 +1,8 @@
 package logic
 
 import (
-	topiccategory "main/models/category/topic_category"
-	personaldata "main/models/personal_data"
+	topiccategory "github.com/sskmy1024/PartnerAssistant/models/category/topic_category"
+	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
 )
 
 // RequireServiceType : サービスリクエストを行うにあたって必要な情報をいれる型

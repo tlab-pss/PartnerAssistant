@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/line/line-bot-sdk-go/linebot"
 
-	"main/modules/logic"
+	"github.com/sskmy1024/PartnerAssistant/modules/logic"
 )
 
 // ExecuteProcess : Logicモジュールにリクエストを送り、処理結果をクライアントに返す
