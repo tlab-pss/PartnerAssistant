@@ -50,7 +50,7 @@ func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 	replyData := new(watsonResType.WatsonResponseType)
 
 	if err := json.Unmarshal(jsonBytes, replyData); err != nil {
-		fmt.Printf("JSON Unmarshal error: %+v \n %+v", err, jsonBytes)
+		fmt.Printf("JSON Unmarshal error: %+v \n %+v", err, response.String())
 	}
 
 	return replyData, nil

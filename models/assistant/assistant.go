@@ -54,11 +54,11 @@ type WatsonResponseType struct {
 				DialogTurnCounter int  `json:"dialog_turn_counter"`
 				Initialized       bool `json:"initialized"`
 			} `json:"system"`
-			RequireService bool   `json:"require_service"`
-			TopicCategory  string `json:"topic_category"`
-			PdCategory     string `json:"pd_category"`
-			PdBasicColumn  string `json:"pd_basic_column"`
-			Value          string `json:"value"`
+			RequireService bool        `json:"require_service"`
+			TopicCategory  string      `json:"topic_category"`
+			PdCategory     string      `json:"pd_category"`
+			PdBasicColumn  string      `json:"pd_basic_column"`
+			Value          interface{} `json:"value"`
 		} `json:"context"`
 		Output struct {
 			Generic []struct {
@@ -118,7 +118,7 @@ func (r WatsonResponseType) getBasicPersonalDataColumn() string {
 	return r.Result.Context.PdBasicColumn
 }
 
-func (r WatsonResponseType) getValue() string {
+func (r WatsonResponseType) getValue() interface{} {
 	return r.Result.Context.Value
 }
 
@@ -169,9 +169,8 @@ func (r *WatsonResponseType) PDBasicColumn() basicpd.BasicPDColumn {
 
 // UpdateBasicPersonalData : Watsonから返された値をもとに、アップデートに必要なUpdateBasicPersonalDataを返す
 func (r *WatsonResponseType) UpdateBasicPersonalData() basicpd.UpdateBasicPersonalData {
-	value := r.getValue()
-
-	if value == "" {
+	value, ok := r.getValue().(string)
+	if !ok || value == "" {
 		return basicpd.UpdateBasicPersonalData{}
 	}
 
