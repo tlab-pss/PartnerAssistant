@@ -1,21 +1,35 @@
 package logic
 
+// LogicPayload : Logicに渡すデータ群
+type LogicPayload struct {
+	ImagePath   string `json:"image_path"`
+	UserMessage string `json:"user_message"`
+}
+
 // ExecuteLogic : AIとクライアントを仲介するLogicを実行する
-func ExecuteLogic(request string) (*ReplyAIType, error) {
-	replyData, err := RequestAI(request)
-	if err != nil {
-		return &ReplyAIType{
-			Message: "AIとの接続に失敗しました",
-		}, err
+func (payload LogicPayload) ExecuteLogic() (*ReplyAIType, error) {
+	var requestArgs RequireServiceType
+	var replyMessage string
+
+	if payload.UserMessage != "" {
+		replyData, err := RequestAI(payload.UserMessage)
+		if err != nil {
+			return &ReplyAIType{
+				Message: "AIとの接続に失敗しました",
+			}, err
+		}
+
+		requestArgs = *ConvertRequireServiceType(replyData)
+		replyMessage = replyData.ReplyText()
 	}
 
-	requestArgs := ConvertRequireServiceType(replyData)
+	requestArgs.UserSendDataValue = payload
 
-	// レスポンスのパラメタによって動作を分岐させる
+	// Note : レスポンスのパラメタによって動作を分岐させる
 	requestArgs.BranchLogic()
 
 	result := &ReplyAIType{
-		Message: replyData.ReplyText(),
+		Message: replyMessage,
 	}
 
 	return result, nil

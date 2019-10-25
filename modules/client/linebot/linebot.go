@@ -36,7 +36,10 @@ func ExecuteProcess(c echo.Context) error {
 			case *linebot.TextMessage:
 				fmt.Println("Get message:", message.Text)
 
-				watsonResponse, err := logic.ExecuteLogic(message.Text)
+				payload := &logic.LogicPayload{
+					UserMessage: message.Text,
+				}
+				watsonResponse, err := payload.ExecuteLogic()
 				if err != nil {
 					fmt.Println("Watson error:", err)
 				}
@@ -44,6 +47,28 @@ func ExecuteProcess(c echo.Context) error {
 				if _, err = bot.ReplyMessage(event.ReplyToken, resMessage).Do(); err != nil {
 					fmt.Println("Reply error:", err)
 				}
+			case *linebot.ImageMessage:
+				payload := &logic.LogicPayload{
+					ImagePath: message.OriginalContentURL,
+				}
+				response, err := payload.ExecuteLogic()
+				if err != nil {
+					fmt.Println("Watson error:", err)
+				}
+				resMessage := linebot.NewTextMessage(response.Message)
+				if _, err = bot.ReplyMessage(event.ReplyToken, resMessage).Do(); err != nil {
+					fmt.Println("Reply error:", err)
+				}
+
+				// imgResponse, err := http.Get(message.OriginalContentURL)
+				// if err != nil {
+				// 	log.Fatal(err)
+				// }
+				// defer imgResponse.Body.Close()
+
+				// fileData, _ := ioutil.ReadAll(imgResponse.Body)
+				// base64img := base64.StdEncoding.EncodeToString(fileData)
+				// fmt.Printf("<img src=\"data:image/jpg;base64,%s\">", base64img)
 			}
 		}
 	}

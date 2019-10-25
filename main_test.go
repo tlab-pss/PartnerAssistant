@@ -28,7 +28,7 @@ func TestHelloSuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	s.ServeHTTP(w, req)
 
-	json := `{"message":"そうですか"}
+	json := `{"message":"そうですか","image_path":""}
 `
 	assert.Equal(t, 200, w.Code)
 	assert.Equal(t, json, w.Body.String())
