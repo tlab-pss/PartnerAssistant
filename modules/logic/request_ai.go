@@ -9,8 +9,8 @@ import (
 	"github.com/IBM/go-sdk-core/core"
 	assistant "github.com/watson-developer-cloud/go-sdk/assistantv1"
 
-	watsonResType "main/models/assistant"
-	personaldata "main/models/personal_data"
+	watsonResType "github.com/sskmy1024/PartnerAssistant/models/assistant"
+	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
 )
 
 // ReplyAIType : AIのResqponseの型を定義する
@@ -19,7 +19,7 @@ type ReplyAIType struct {
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
-func RequestAI(reqMessage string) (*ReplyAIType, error) {
+func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 	authenticator := &core.IamAuthenticator{
 		ApiKey: os.Getenv("watson_iam_apikey"),
 	}
@@ -43,19 +43,22 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 	response, responseErr := service.Message(messageOptions)
 
 	if responseErr != nil {
-		return &ReplyAIType{}, responseErr
+		return nil, responseErr
 	}
 
 	jsonBytes := ([]byte)(response.String())
 	replyData := new(watsonResType.WatsonResponseType)
 
 	if err := json.Unmarshal(jsonBytes, replyData); err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+		fmt.Printf("JSON Unmarshal error: %+v \n %+v", err, response.String())
 	}
 
-	// fmt.Println(response)
+	return replyData, nil
+}
 
-	requestArgs := &RequireServiceType{
+// ConvertRequireServiceType : サービス接続用の型に変換する
+func ConvertRequireServiceType(replyData *watsonResType.WatsonResponseType) *RequireServiceType {
+	return &RequireServiceType{
 		TopicCategory:  replyData.TopicCategory(),
 		RequireService: replyData.IsRequireService(),
 		PersonalDataValue: personaldata.PersonalDataValue{
@@ -64,13 +67,4 @@ func RequestAI(reqMessage string) (*ReplyAIType, error) {
 		},
 		ServiceDataValue: nil,
 	}
-
-	// レスポンスのパラメタによって動作を分岐させる
-	requestArgs.BranchLogic()
-
-	result := &ReplyAIType{
-		Message: replyData.ReplyText(),
-	}
-
-	return result, nil
 }

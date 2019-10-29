@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	topiccategory "main/models/category/topic_category"
+	topiccategory "github.com/sskmy1024/PartnerAssistant/models/category/topic_category"
 )
 
 // BranchLogic : カテゴリに応じて実行ロジックを分岐させる

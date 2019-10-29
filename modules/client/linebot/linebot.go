@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/line/line-bot-sdk-go/linebot"
 
-	"main/modules/logic"
+	"github.com/sskmy1024/PartnerAssistant/modules/logic"
 )
 
 // ExecuteProcess : Logicモジュールにリクエストを送り、処理結果をクライアントに返す
@@ -36,7 +36,7 @@ func ExecuteProcess(c echo.Context) error {
 			case *linebot.TextMessage:
 				fmt.Println("Get message:", message.Text)
 
-				watsonResponse, err := logic.RequestAI(message.Text)
+				watsonResponse, err := logic.ExecuteLogic(message.Text)
 				if err != nil {
 					fmt.Println("Watson error:", err)
 				}

@@ -3,7 +3,8 @@ package personaldata
 import (
 	"errors"
 	"fmt"
-	basicpd "main/models/personal_data/basic"
+
+	basicpd "github.com/sskmy1024/PartnerAssistant/models/personal_data/basic"
 )
 
 // PersonalDataCategory : ベーシックデータのカテゴリを定義
