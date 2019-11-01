@@ -21,7 +21,7 @@ type ReplyAIType struct {
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用
 func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 	authenticator := &core.IamAuthenticator{
-		ApiKey: os.Getenv("watson_iam_apikey"),
+		ApiKey: os.Getenv("WATSON_IAM_APIKEY"),
 	}
 
 	service, serviceErr := assistant.NewAssistantV1(&assistant.AssistantV1Options{
