@@ -23,6 +23,7 @@ RUN go build -o PartnerAssistant main.go
 
 FROM alpine:3.9 as release
 WORKDIR /apps
+COPY --from=build /go/src/.env /apps/
 COPY --from=build /go/src/PartnerAssistant /usr/local/bin/PartnerAssistant
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/PartnerAssistant"]
