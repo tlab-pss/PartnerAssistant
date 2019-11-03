@@ -19,7 +19,7 @@ func TestHelloSuccess(t *testing.T) {
 
 	testData := `
 	{
-		"message": "お腹すいた"
+		"message": "焼肉食べたい"
 	}
 	`
 
