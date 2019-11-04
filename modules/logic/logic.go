@@ -35,5 +35,9 @@ func (payload LogicPayload) ExecuteLogic() (*ReplyAIType, error) {
 
 	result.Message = response.ResponseData.Text
 
+	if response.ResponseData.ImagePaths[0] != "" {
+		result.ImagePath = response.ResponseData.ImagePaths[0]
+	}
+
 	return &result, nil
 }
