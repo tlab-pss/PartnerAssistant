@@ -36,15 +36,14 @@ func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 		return nil, err
 	}
 
-	workspaceID := os.Getenv("watson_workspace_id")
+	workspaceID := os.Getenv("WATSON_WORKSPACE_ID")
 	input := &assistant.MessageInput{}
 	input.SetText(core.StringPtr(reqMessage))
-	messageOptions := service.NewMessageOptions(workspaceID).
-		SetInput(input)
+	messageOptions := service.NewMessageOptions(workspaceID).SetInput(input)
 
 	response, err := service.Message(messageOptions)
-
 	if err != nil {
+		fmt.Printf("Error: service cannot send response message\n %+v", err)
 		return nil, err
 	}
 
