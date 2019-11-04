@@ -1,7 +1,5 @@
 package logic
 
-import "fmt"
-
 // LogicPayload : Logicに渡すデータ群
 type LogicPayload struct {
 	ImagePath   string `json:"image_path"`
@@ -30,14 +28,12 @@ func (payload LogicPayload) ExecuteLogic() (*ReplyAIType, error) {
 	var result ReplyAIType
 
 	// Note : レスポンスのパラメタによって動作を分岐させる
-	assistantResponse, err := requestArgs.BranchLogic()
+	response, err := requestArgs.BranchLogic()
 	if err != nil {
 		result.Message = replyMessage
 	}
 
-	fmt.Println(assistantResponse.ServiceDataValue)
-
-	result.Message = assistantResponse.ServiceDataValue.ResponseData.Text
+	result.Message = response.ResponseData.Text
 
 	return &result, nil
 }

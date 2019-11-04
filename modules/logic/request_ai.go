@@ -11,6 +11,7 @@ import (
 
 	watsonResType "github.com/sskmy1024/PartnerAssistant/models/assistant"
 	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
+	rsquery "github.com/sskmy1024/PartnerAssistant/models/request_service_query"
 )
 
 // ReplyAIType : AIのResponseの型を定義する
@@ -65,6 +66,9 @@ func ConvertRequireServiceType(replyData *watsonResType.WatsonResponseType) *Req
 		PersonalDataValue: personaldata.PersonalDataValue{
 			Category:    replyData.PersonalDataCategory(),
 			BasicValues: replyData.UpdateBasicPersonalData(),
+		},
+		ServiceDataValue: rsquery.RequestServiceQueryType{
+			Keywords: replyData.GetContextKeywords(),
 		},
 	}
 }
