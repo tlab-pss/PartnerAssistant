@@ -13,9 +13,10 @@ import (
 	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
 )
 
-// ReplyAIType : AIのResqponseの型を定義する
+// ReplyAIType : AIのResponseの型を定義する
 type ReplyAIType struct {
-	Message string `json:"message"`
+	Message   string `json:"message"`
+	ImagePath string `json:"image_path"`
 }
 
 // RequestAI : AIに向けてリクエストを送るところ。今回はWatson Assistantを使用

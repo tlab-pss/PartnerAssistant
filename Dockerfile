@@ -19,11 +19,12 @@ WORKDIR /go/src
 ENV GO111MODULE=on
 RUN apk --update add --no-cache git \
   mercurial
-RUN go build -o RecommendSystem main.go
+RUN go build -o PartnerAssistant main.go
 
 FROM alpine:3.9 as release
 WORKDIR /apps
-COPY --from=build /go/src/RecommendSystem /usr/local/bin/RecommendSystem
+COPY --from=build /go/src/.env /apps/
+COPY --from=build /go/src/PartnerAssistant /usr/local/bin/PartnerAssistant
 EXPOSE 8080
-ENTRYPOINT ["/usr/local/bin/RecommendSystem"]
+ENTRYPOINT ["/usr/local/bin/PartnerAssistant"]
 # ====================================

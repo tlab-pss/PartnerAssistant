@@ -12,7 +12,11 @@ import (
 func TestMainLogic(t *testing.T) {
 	infrastructures.InitEnvWithPath("../../")
 
-	res, err := ExecuteLogic("お腹すいた")
+	payload := LogicPayload{
+		UserMessage: "お腹すいた",
+	}
+
+	res, err := payload.ExecuteLogic()
 	if err != nil {
 		t.Errorf("Cannot execute Logic: %+v", err)
 	}

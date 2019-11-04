@@ -44,7 +44,7 @@ func (r *RequireServiceType) RequestService() (*RecommendServiceResType, error) 
 		return rsRes, err
 	}
 
-	req, err := http.NewRequest("POST", "http://rs:8080/api/request", bytes.NewBuffer(jsonBytes))
+	req, err := http.NewRequest("POST", "http://rs:8080/api/recommend", bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		fmt.Printf("pd error, cannot create http request")
 		return rsRes, err
@@ -61,7 +61,7 @@ func (r *RequireServiceType) RequestService() (*RecommendServiceResType, error) 
 	defer resp.Body.Close()
 
 	var rBody io.Reader = resp.Body
-	// r = io.TeeReader(r, os.Stderr)
+	// rBody = io.TeeReader(rBody, os.Stderr)
 
 	if err := json.NewDecoder(rBody).Decode(rsRes); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)

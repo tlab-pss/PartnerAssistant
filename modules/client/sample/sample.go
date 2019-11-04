@@ -24,7 +24,11 @@ func ExecuteProcess(c echo.Context) error {
 		return err
 	}
 
-	response, err := logic.ExecuteLogic(post.Message)
+	payload := &logic.LogicPayload{
+		UserMessage: post.Message,
+	}
+
+	response, err := payload.ExecuteLogic()
 	if err != nil {
 		return err
 	}
