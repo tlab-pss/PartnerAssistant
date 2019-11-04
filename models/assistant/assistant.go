@@ -179,3 +179,13 @@ func (r *WatsonResponseType) UpdateBasicPersonalData() basicpd.UpdateBasicPerson
 		Value:  value,
 	}
 }
+
+// TODO : 配列にしたい
+// GetContextKeywords : Watsonから帰って来たキーワードを返す
+func (r *WatsonResponseType) GetContextKeywords() string {
+	value, ok := r.getValue().(string)
+	if !ok {
+		return ""
+	}
+	return value
+}

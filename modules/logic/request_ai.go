@@ -11,6 +11,7 @@ import (
 
 	watsonResType "github.com/sskmy1024/PartnerAssistant/models/assistant"
 	personaldata "github.com/sskmy1024/PartnerAssistant/models/personal_data"
+	rsquery "github.com/sskmy1024/PartnerAssistant/models/request_service_query"
 )
 
 // ReplyAIType : AIのResponseの型を定義する
@@ -25,14 +26,14 @@ func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 		ApiKey: os.Getenv("WATSON_IAM_APIKEY"),
 	}
 
-	service, serviceErr := assistant.NewAssistantV1(&assistant.AssistantV1Options{
+	service, err := assistant.NewAssistantV1(&assistant.AssistantV1Options{
 		URL:           "https://gateway.watsonplatform.net/assistant/api",
 		Version:       "2019-07-10",
 		Authenticator: authenticator,
 	})
 
-	if serviceErr != nil {
-		panic(serviceErr)
+	if err != nil {
+		return nil, err
 	}
 
 	workspaceID := os.Getenv("watson_workspace_id")
@@ -41,10 +42,10 @@ func RequestAI(reqMessage string) (*watsonResType.WatsonResponseType, error) {
 	messageOptions := service.NewMessageOptions(workspaceID).
 		SetInput(input)
 
-	response, responseErr := service.Message(messageOptions)
+	response, err := service.Message(messageOptions)
 
-	if responseErr != nil {
-		return nil, responseErr
+	if err != nil {
+		return nil, err
 	}
 
 	jsonBytes := ([]byte)(response.String())
@@ -66,6 +67,8 @@ func ConvertRequireServiceType(replyData *watsonResType.WatsonResponseType) *Req
 			Category:    replyData.PersonalDataCategory(),
 			BasicValues: replyData.UpdateBasicPersonalData(),
 		},
-		ServiceDataValue: nil,
+		ServiceDataValue: rsquery.RequestServiceQueryType{
+			Keywords: replyData.GetContextKeywords(),
+		},
 	}
 }

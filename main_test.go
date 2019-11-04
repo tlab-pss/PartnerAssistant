@@ -19,7 +19,7 @@ func TestHelloSuccess(t *testing.T) {
 
 	testData := `
 	{
-		"message": "お腹すいた"
+		"message": "焼肉食べたい"
 	}
 	`
 
@@ -28,7 +28,7 @@ func TestHelloSuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 	s.ServeHTTP(w, req)
 
-	json := `{"message":"そうですか","image_path":""}
+	json := `{"message":"炭火焼肉 家族亭 韓炉","image_path":""}
 `
 	assert.Equal(t, 200, w.Code)
 	assert.Equal(t, json, w.Body.String())

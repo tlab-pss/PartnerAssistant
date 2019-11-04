@@ -25,12 +25,15 @@ func (payload LogicPayload) ExecuteLogic() (*ReplyAIType, error) {
 
 	requestArgs.UserSendDataValue = payload
 
-	// Note : レスポンスのパラメタによって動作を分岐させる
-	requestArgs.BranchLogic()
+	var result ReplyAIType
 
-	result := &ReplyAIType{
-		Message: replyMessage,
+	// Note : レスポンスのパラメタによって動作を分岐させる
+	response, err := requestArgs.BranchLogic()
+	if err != nil {
+		result.Message = replyMessage
 	}
 
-	return result, nil
+	result.Message = response.ResponseData.Text
+
+	return &result, nil
 }
