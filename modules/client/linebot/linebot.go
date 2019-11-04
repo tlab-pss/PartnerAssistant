@@ -16,8 +16,8 @@ import (
 func ExecuteProcess(c echo.Context) error {
 
 	bot, err := linebot.New(
-		os.Getenv("linebot_channel_secret"),
-		os.Getenv("linebot_channel_token"),
+		os.Getenv("LINEBOT_CHANNEL_SECRET"),
+		os.Getenv("LINEBOT_CHANNEL_TOKEN"),
 	)
 	if err != nil {
 		fmt.Println("Initialize Error:", err)
